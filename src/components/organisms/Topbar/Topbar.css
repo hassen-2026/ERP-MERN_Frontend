@@ -1,0 +1,18 @@
+.o-topbar{
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #eef3fa;
+  gap: 16px;
+}
+.o-topbar__brand-link{ text-decoration: none; color: inherit }
+.o-topbar__brand-text{
+  font-weight: 700;
+  font-size: 18px;
+  color: #0f4b75;
+}
+.o-topbar__nav{ flex: 1; display: flex; justify-content: center }
+.o-topbar__actions{ display:flex; align-items:center }

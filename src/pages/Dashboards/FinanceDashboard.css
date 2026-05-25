@@ -1,0 +1,53 @@
+.finance-dashboard {
+  padding: 24px;
+  background-color: #f4f6fb;
+  min-height: 100vh;
+}
+
+.finance-dashboard .forecast-card {
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.finance-dashboard .forecast-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.finance-dashboard .forecast-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.finance-dashboard .forecast-item span {
+  color: #999;
+  font-size: 13px;
+}
+
+.finance-dashboard .forecast-item strong {
+  color: #184f87;
+  font-weight: 600;
+}
+
+.finance-dashboard .fin-metric-card {
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid #52c41a;
+}
+
+.finance-dashboard .metric-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.finance-dashboard .metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #52c41a;
+}

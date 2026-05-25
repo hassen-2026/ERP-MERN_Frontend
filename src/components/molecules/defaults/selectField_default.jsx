@@ -1,0 +1,17 @@
+export const SELECTFIELD_DEFAULTS = {
+  id: "",
+  label: "",
+  options: [],
+  value: undefined,
+  defaultValue: "",
+  placeholder: "",
+  required: false,
+  error: "",
+  containerClassName: "",
+  defaultLabelClassName: "",
+  errorClassName: "",
+  customClassName: "",
+  selectClassName: "",
+  labelClassName: "",
+  onChange: () => {},
+};

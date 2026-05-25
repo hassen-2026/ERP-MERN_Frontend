@@ -1,0 +1,25 @@
+.o-finalize-livraison-form {
+  margin-bottom: 16px;
+}
+
+.o-finalize-livraison-form__title {
+  margin: 0 0 16px 0;
+}
+
+.o-finalize-livraison-form__error {
+  margin-bottom: 12px;
+}
+
+.o-finalize-livraison-form__fields {
+  display: grid;
+  grid-template-columns: minmax(240px, 420px);
+  gap: 12px;
+}
+
+.o-finalize-livraison-form__field {
+  width: 100%;
+}
+
+.o-finalize-livraison-form__actions {
+  margin-top: 12px;
+}

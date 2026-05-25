@@ -1,0 +1,14 @@
+.m-loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.m-loading-spinner .ant-spin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

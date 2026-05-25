@@ -1,0 +1,35 @@
+.login-form__links {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-form__link-item {
+  margin: 0;
+  font-size: 14px;
+  color: #657087;
+  text-align: center;
+}
+
+.login-form__link {
+  color: #064c81;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.login-form__link:hover {
+  color: #0f659f;
+  text-decoration: underline;
+}
+
+.login-form__link--secondary {
+  color: #9ca3af;
+}
+
+.login-form__link--secondary:hover {
+  color: #064c81;
+}

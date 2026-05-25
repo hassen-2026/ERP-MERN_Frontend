@@ -1,0 +1,7 @@
+/* AddProductPage.css */
+
+.p-add-product-layout {
+  min-height: calc(100vh - 112px);
+  display: flex;
+  flex-direction: column;
+}

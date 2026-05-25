@@ -1,0 +1,11 @@
+.a-button { padding: 10px 14px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 600; }
+.a-button--primary   { background: #1890ff; color: #fff; }
+.a-button--secondary { background: #e5e7eb; color: #111827; }
+.a-button--success   { background: #10b981; color: red; }
+.a-button--danger    { background: #ef4444; color: #fff; }
+.a-button--warning   { background: #f59e0b; color: #111827; }
+.a-button--ghost     { background: transparent; border: 1px solid #d1d5db; color: #111827; }
+.a-button--link      { background: transparent; color: #7c5cff; text-decoration: underline; }
+
+
+

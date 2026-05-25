@@ -1,0 +1,21 @@
+.p-purchase-page__filters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.p-purchase-page__table {
+  min-width: 1120px;
+}
+
+.p-action-btn--success {
+  background: #3aa54a !important;
+  border-color: #3aa54a !important;
+  color: #fff !important;
+}
+
+@media (max-width: 900px) {
+  .p-purchase-page__filters-grid {
+    grid-template-columns: 1fr;
+  }
+}

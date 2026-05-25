@@ -1,0 +1,40 @@
+.o-edit-profile-form {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.o-edit-profile-form__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #262626;
+}
+
+.o-edit-profile-form__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.o-edit-profile-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .o-edit-profile-form__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.o-edit-profile-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}

@@ -1,0 +1,341 @@
+/* pages.css - Archived: All page-specific styles have been moved to their respective page CSS files */
+/* This file is kept for historical reference but is no longer used */
+
+.p-detail-movements {
+  width: 100%;
+}
+
+.p-detail-movements__table {
+  width: 100%;
+}
+
+.p-detail-movements__table .ant-table {
+  background: transparent;
+}
+
+.p-detail-movements__table .ant-table-thead > tr > th {
+  background: #f5f8fd;
+  color: #27486a;
+  font-size: 12px;
+  font-weight: 700;
+  border-bottom: 1px solid #e3ebf5;
+}
+
+.p-detail-movements__table .ant-table-tbody > tr > td {
+  font-size: 13px;
+  color: #34465f;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.p-detail-movements__table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.p-product-page__control {
+  width: 100%;
+}
+
+.p-product-page__table {
+  min-width: 980px;
+}
+
+.p-product-page__state {
+  padding: 12px 16px;
+  color: #516073;
+}
+
+.p-product-page__state--error {
+  color: #de4357;
+}
+
+.p-product-page__avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eaf2ff, #d8e7ff);
+  color: #184f87;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-product-page__muted {
+  color: #657087;
+  margin-bottom: 0 !important;
+}
+
+.p-pill--category {
+  background: #176ba8;
+  color: #fff;
+}
+
+.p-pill--warning {
+  background: #f0b614;
+  color: #1d2b3e;
+}
+
+.p-pill--danger {
+  background: #de4357;
+  color: #fff;
+}
+
+.p-pill--stock {
+  background: #23b65f;
+  color: #fff;
+}
+
+.p-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.p-action-btn {
+  font-size: 12px;
+  padding-inline: 10px !important;
+}
+
+.p-action-btn--info {
+  background: #16a7ca !important;
+  border-color: #16a7ca !important;
+  color: #fff !important;
+}
+
+.p-action-btn--warn {
+  background: #f0b614 !important;
+  border-color: #f0b614 !important;
+  color: #1d2b3e !important;
+}
+
+.p-action-btn--danger {
+  background: #de4357 !important;
+  border-color: #de4357 !important;
+  color: #fff !important;
+}
+
+@media (max-width: 1100px) {
+  .p-product-page__header {
+    flex-direction: column;
+  }
+
+  .p-product-page__filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .p-product-detail__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.p-product-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.p-product-page__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.p-product-page__title {
+  margin-bottom: 4px !important;
+}
+
+.p-product-page__subtitle {
+  color: #657087;
+  margin-bottom: 0 !important;
+}
+
+.p-product-page__header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.p-product-toolbar-btn {
+  min-height: 36px;
+  border-radius: 4px !important;
+  font-weight: 600;
+}
+
+.p-product-toolbar-btn--add {
+  background: #0f5e96 !important;
+  border-color: #0f5e96 !important;
+  color: #fff !important;
+}
+
+.p-product-toolbar-btn--init {
+  background: #0aa4bb !important;
+  border-color: #0aa4bb !important;
+  color: #fff !important;
+}
+
+.p-product-toolbar-btn--bulk {
+  background: #f0b614 !important;
+  border-color: #f0b614 !important;
+  color: #1d2b3e !important;
+}
+
+.p-product-toolbar-btn--pdf {
+  background: #de4357 !important;
+  border-color: #de4357 !important;
+  color: #fff !important;
+}
+
+.p-product-toolbar-btn--excel {
+  background: #23b65f !important;
+  border-color: #23b65f !important;
+  color: #fff !important;
+}
+
+.p-product-page__filters {
+  padding: 16px;
+}
+
+.p-product-page__filters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.p-product-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.p-product-page__control {
+  width: 100%;
+}
+
+.p-product-page__table {
+  min-width: 980px;
+}
+
+.p-product-page__avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eaf2ff, #d8e7ff);
+  color: #184f87;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-product-page__muted {
+  color: #657087;
+}
+
+.p-pill--warning {
+  background: #f0b614;
+  color: #1d2b3e;
+}
+
+.p-pill--danger {
+  background: #de4357;
+  color: #fff;
+}
+
+.p-pill--stock {
+  background: #23b65f;
+  color: #fff;
+}
+
+@media (max-width: 1100px) {
+  .p-product-page__header {
+    flex-direction: column;
+  }
+
+  .p-product-page__filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.p-file-input {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #fff;
+}
+
+.p-page-footer {
+  margin-top: auto;
+  background: #143a5a;
+  color: #fff;
+  text-align: center;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.p-login {
+  min-height: 100vh;
+  background: linear-gradient(140deg, #0f4d82, #1d5f95);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.p-login__card {
+  width: 100%;
+  max-width: 460px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+.p-login__header {
+  background: linear-gradient(180deg, #064c81, #0f659f);
+  color: #fff;
+  padding: 24px;
+  text-align: center;
+}
+
+.p-login__header h2 {
+  margin: 0;
+}
+
+.p-login__body {
+  background: #fff;
+  padding: 20px;
+}
+
+.p-login__alert {
+  background: #dff1e8;
+  border: 1px solid #c3e1d3;
+  color: #2f6e4c;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1100px) {
+  .p-grid--4 {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .p-dashboard__stats,
+  .p-product-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 780px) {
+  .p-grid--4,
+  .p-dashboard__stats,
+  .p-product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .p-sale-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

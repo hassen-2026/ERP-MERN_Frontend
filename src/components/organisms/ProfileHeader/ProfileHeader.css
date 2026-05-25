@@ -1,0 +1,33 @@
+.o-profile-header {
+  width: 100%;
+}
+
+.o-profile-header__container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.o-profile-header__actions {
+  display: flex;
+  gap: 12px;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .o-profile-header__container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .o-profile-header__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

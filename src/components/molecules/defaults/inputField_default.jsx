@@ -1,0 +1,15 @@
+export const INPUTFIELD_DEFAULTS = {
+  id: "",
+  label: "",
+  inputType: "text",
+  value: undefined,
+  defaultValue: "",
+  placeholder: "",
+  required: false,
+  error: "",
+  customClassName: "",
+  inputClassName: "",
+  labelClassName: "",
+  errorClassName: "a-helper a-helper--error",
+  onChange: () => {},
+};

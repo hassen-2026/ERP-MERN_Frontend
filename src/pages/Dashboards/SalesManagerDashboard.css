@@ -1,0 +1,36 @@
+.sales-manager-dashboard {
+  padding: 24px;
+  background-color: #f4f6fb;
+  min-height: 100vh;
+}
+
+.sales-manager-dashboard .kpi-card {
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sales-manager-dashboard .kpi-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.sales-manager-dashboard .kpi-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sales-manager-dashboard .kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #52c41a;
+  margin-bottom: 8px;
+}
+
+.sales-manager-dashboard .kpi-trend {
+  font-size: 12px;
+  color: #666;
+}

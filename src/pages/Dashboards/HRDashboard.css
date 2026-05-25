@@ -1,0 +1,25 @@
+.hr-dashboard {
+  padding: 24px;
+  background-color: #f4f6fb;
+  min-height: 100vh;
+}
+
+.hr-dashboard .hr-kpi-card {
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid #184f87;
+}
+
+.hr-dashboard .kpi-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hr-dashboard .kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #184f87;
+}

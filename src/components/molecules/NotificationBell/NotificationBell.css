@@ -1,0 +1,8 @@
+.m-notification-bell{
+  display: inline-flex;
+  align-items: center;
+  color: #20344f;
+}
+.m-notification-bell__icon{
+  font-size: 20px;
+}

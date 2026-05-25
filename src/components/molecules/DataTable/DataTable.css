@@ -1,0 +1,48 @@
+/* DataTable.css */
+
+.o-movements {
+	background: #fff;
+	border-radius: 10px;
+	border: 1px solid #e6e9f0;
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+.o-movements__title {
+	margin: 0;
+	background: #0e5b95;
+	color: #fff;
+	padding: 12px 16px;
+	font-size: 16px;
+}
+
+.o-movements__table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.o-movements__table th,
+.o-movements__table td {
+	text-align: left;
+	padding: 12px 16px;
+	border-bottom: 1px solid #edf1f7;
+	font-size: 14px;
+}
+
+.p-table-section__title {
+	margin: 0;
+	background: #0e5b95;
+	color: #fff;
+	padding: 12px 16px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.p-data-table__state {
+	padding: 12px 16px;
+	color: #516073;
+}
+
+.p-data-table__state--error {
+	color: #de4357;
+}

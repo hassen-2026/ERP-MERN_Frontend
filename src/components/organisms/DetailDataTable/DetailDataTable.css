@@ -1,0 +1,17 @@
+.p-detail-table {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-x: auto;
+}
+
+.p-detail-table__table {
+  min-width: 620px;
+}
+
+@media (max-width: 768px) {
+  .p-detail-table__table {
+    min-width: 520px;
+  }
+}

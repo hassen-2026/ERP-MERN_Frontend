@@ -1,0 +1,82 @@
+/* AddProduct.css */
+
+.p-form-card {
+	background: #fff;
+	border: 1px solid #e6e9f0;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.p-form-card__title {
+	margin: 0;
+	background: #0e5b95;
+	color: #fff;
+	padding: 12px 16px;
+}
+
+.p-form-card .p-page__stack {
+	padding: 16px;
+}
+
+.p-form-actions {
+	display: flex;
+	gap: 10px;
+}
+
+.p-form-actions--centered {
+	justify-content: center;
+}
+
+.p-add-product-btn {
+	min-width: 140px;
+	height: 38px;
+	border-radius: 4px !important;
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	font-weight: 600;
+}
+
+.p-add-product-btn--save {
+	background: #0f5e96 !important;
+	border-color: #0f5e96 !important;
+	color: #fff !important;
+}
+
+.p-add-product-btn--cancel {
+	background: #6e7d8c !important;
+	border-color: #6e7d8c !important;
+	color: #fff !important;
+}
+
+.p-page__stack {
+	display: grid;
+	gap: 6px;
+}
+
+.p-field {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.p-field__label {
+	font-size: 14px;
+	color: #2a2a2a;
+	font-weight: 600;
+}
+
+.p-field__display-value {
+	padding: 8px 12px;
+	background: #f5f5f5;
+	border: 1px solid #e6e9f0;
+	border-radius: 4px;
+	font-size: 14px;
+	color: #555;
+}
+
+.p-field__error {
+	color: #d14343;
+	font-size: 12px;
+}

@@ -1,0 +1,41 @@
+.m-profile-field {
+  width: 100%;
+}
+
+.m-profile-field__container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.m-profile-field__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 16px;
+  color: #1890ff;
+}
+
+.m-profile-field__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.m-profile-field__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8c8c8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.m-profile-field__value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+  margin: 0;
+}

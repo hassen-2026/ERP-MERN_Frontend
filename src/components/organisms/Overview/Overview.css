@@ -1,0 +1,143 @@
+/* Overview Component Styles */
+
+.p-overview {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+  padding: 0;
+}
+
+.p-overview__card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.p-overview__card:hover {
+  box-shadow: none;
+}
+
+.p-overview__card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #0e5b95;
+  margin: 0;
+  padding: 12px 16px;
+  border-bottom: none;
+}
+
+.p-overview__card-body {
+  padding: 14px 16px;
+}
+
+.p-overview__info-row {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #edf1f7;
+  align-items: center;
+}
+
+.p-overview__info-row:last-child {
+  border-bottom: none;
+}
+
+.p-overview__info-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d2b3e;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.p-overview__info-value {
+  font-size: 14px;
+  font-weight: 400;
+  color: #34465f;
+  max-width: none;
+  text-align: left;
+  word-break: break-word;
+}
+
+.p-overview__movements-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.p-overview__movements-table-section {
+  background: #ffffff;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.p-overview__movements-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.p-overview__movements-table-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.p-overview__movements-error {
+  padding: 16px;
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 0;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+/* Pill/Badge styles */
+.p-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.p-pill--category {
+  background: #176ba8;
+  color: #fff;
+}
+
+.p-pill--stock {
+  background: #23b65f;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .p-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .p-overview {
+    padding: 0;
+    gap: 12px;
+  }
+
+  .p-overview__info-row {
+    grid-template-columns: 100px 1fr;
+    gap: 8px;
+  }
+
+  .p-overview__info-value {
+    max-width: 100%;
+  }
+}
+

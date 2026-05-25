@@ -1,0 +1,116 @@
+/* DashboardPage.css */
+
+.p-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.p-stat-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e6e9f0;
+  padding: 18px 20px;
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.p-stat-card__value {
+  margin: 0 !important;
+  color: #184f87;
+  font-size: 26px !important;
+  line-height: 1.1 !important;
+}
+
+.p-stat-card__label {
+  color: #616779;
+  font-size: 13px;
+}
+
+.p-page__stack {
+  display: grid;
+  gap: 16px;
+}
+
+.p-card {
+  background: #fff;
+  border: 1px solid #e6e9f0;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.p-card--table {
+  overflow: auto;
+}
+
+.p-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.p-grid--4 {
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+}
+
+.p-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.p-table th,
+.p-table td {
+  border-bottom: 1px solid #edf1f7;
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.p-table th {
+  color: #4e5870;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.p-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.p-action-btn {
+  font-size: 12px;
+  padding-inline: 10px !important;
+}
+
+.p-action-btn--info {
+  background: #16a7ca !important;
+  border-color: #16a7ca !important;
+  color: #fff !important;
+}
+
+.p-action-btn--warn {
+  background: #f0b614 !important;
+  border-color: #f0b614 !important;
+  color: #1d2b3e !important;
+}
+
+.p-action-btn--danger {
+  background: #de4357 !important;
+  border-color: #de4357 !important;
+  color: #fff !important;
+}
+
+.p-table-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.p-secondary-btn {
+  background: #dce1ea !important;
+  border-color: #dce1ea !important;
+  color: #2f3d4f !important;
+}

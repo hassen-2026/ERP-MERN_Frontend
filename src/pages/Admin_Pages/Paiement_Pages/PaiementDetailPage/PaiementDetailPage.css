@@ -1,0 +1,52 @@
+/* PaiementDetailPage.css: full-width ProductInfoItem */
+
+.p-paiement-detail__card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.p-paiement-detail__card-title {
+  margin: 0;
+  padding: 12px 16px;
+  background: #0e5b95;
+  color: #fff;
+  font-weight: 600;
+}
+
+.p-paiement-detail__info-rows {
+  padding: 14px 16px;
+}
+
+/* Full width row: stack label above value and let value take full width */
+.p-paiement-fullwidth {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.p-paiement-fullwidth {
+  padding: 8px 0;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.p-paiement-fullwidth:last-child {
+  border-bottom: none;
+}
+
+.p-paiement-fullwidth .p-overview__info-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d2b3e;
+}
+
+.p-paiement-fullwidth .p-overview__info-value {
+  display: block;
+  width: 100%;
+  color: #34465f;
+  font-size: 14px;
+  white-space: pre-wrap;
+}

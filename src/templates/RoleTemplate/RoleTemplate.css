@@ -1,0 +1,23 @@
+.t-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+.t-shell__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.t-shell__content {
+  padding: 24px;
+}
+
+
+.t-shell__title {
+  margin: 0 0 16px;
+  font-size: 34px;
+  line-height: 1.2;
+  color: #20344f;
+  font-weight: 700;
+}
