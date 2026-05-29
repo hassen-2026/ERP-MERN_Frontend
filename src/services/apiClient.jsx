@@ -2,8 +2,15 @@ import axios from "axios";
 
 function normalizeApiBase(raw) {
   if (!raw) return "http://localhost:5000/api";
+  let base = raw.trim();
+
+  if (base.startsWith("REACT_APP_API_URL=")) {
+    base = base.slice("REACT_APP_API_URL=".length);
+  }
+
   // remove trailing slashes
-  let base = raw.replace(/\/+$/g, "");
+  base = base.replace(/\/+$/g, "");
+
   // ensure it ends with /api
   if (!base.endsWith("/api")) base = `${base}/api`;
   return base;
