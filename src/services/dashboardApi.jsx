@@ -153,6 +153,44 @@ const buildTurnoverSeries = ({ records, entities, relationKeys, amountKeys, fall
   return Array.from(turnoverByEntity.values()).sort((left, right) => right.value - left.value);
 };
 
+const normalizeStatus = (status) => String(status || "").trim().toUpperCase();
+
+const isDeliveredStatus = (status) => {
+  const normalized = normalizeStatus(status);
+  return (
+    normalized === "DELIVERED" ||
+    normalized === "RECEIVED" ||
+    normalized === "RECU" ||
+    normalized.includes("DELIVER") ||
+    normalized.includes("RECEIV") ||
+    normalized.includes("LIVR")
+  );
+};
+
+const isPendingDeliveryStatus = (status) => {
+  const normalized = normalizeStatus(status);
+  return normalized === "PLANNED" || normalized === "PENDING" || normalized.includes("PLAN");
+};
+
+const isCancelledDeliveryStatus = (status) => {
+  const normalized = normalizeStatus(status);
+  return normalized === "CANCELLED" || normalized === "CANCELED" || normalized.includes("ANNUL");
+};
+
+const getTransporterLabel = (transporter, transportersById = new Map()) => {
+  if (!transporter) return "Transporteur inconnu";
+
+  if (typeof transporter === "string") {
+    const matched = transportersById.get(String(transporter));
+    if (matched) {
+      return matched.name || matched.plateNumber || "Transporteur inconnu";
+    }
+    return "Transporteur inconnu";
+  }
+
+  return transporter.name || transporter.plateNumber || "Transporteur inconnu";
+};
+
 // ============ ADMIN DASHBOARD ============
 export const getAdminDashboardData = async () => {
   try {
@@ -711,22 +749,50 @@ export const getFinanceDashboardData = async () => {
 // ============ LOGISTICS DASHBOARD ============
 export const getLogisticsDashboardData = async () => {
   try {
-    const [livraisonsRes, transportersRes] = await Promise.all([
+    const [livraisonsRes, transportersRes, productsRes, movementsRes] = await Promise.all([
       apiClient.get("/livraisons"),
       apiClient.get("/transporters"),
+      apiClient.get("/products"),
+      apiClient.get("/stock-movements"),
     ]);
 
     const livraisons = livraisonsRes.data?.data || livraisonsRes.data || [];
     const transporters = transportersRes.data?.data || transportersRes.data || [];
+    const products = productsRes.data?.data || productsRes.data || [];
+    const movements = movementsRes.data?.data || movementsRes.data || [];
 
-    const deliveredCount = livraisons.filter((l) => l.status === "delivered").length;
-    const pendingCount = livraisons.filter((l) => l.status === "pending").length;
+    const deliveredCount = livraisons.filter((l) => isDeliveredStatus(l.status)).length;
+    const pendingCount = livraisons.filter((l) => isPendingDeliveryStatus(l.status)).length;
+    const cancelledCount = livraisons.filter((l) => isCancelledDeliveryStatus(l.status)).length;
+
+    const lowStockProducts = products.filter((product) => Number(product.quantity || 0) <= Number(product.minThreshold || 0)).length;
+    const totalStock = products.reduce((sum, product) => sum + Number(product.quantity || 0), 0);
+    const incomingQuantity = movements
+      .filter((movement) => String(movement.type || "").toLowerCase() === "in")
+      .reduce((sum, movement) => sum + Number(movement.quantity || 0), 0);
+    const outgoingQuantity = movements
+      .filter((movement) => String(movement.type || "").toLowerCase() === "out")
+      .reduce((sum, movement) => sum + Number(movement.quantity || 0), 0);
+
+    const totalDeliveries = livraisons.length;
+    const totalMovements = movements.length;
 
     return {
-      totalDeliveries: livraisons.length,
+      totalDeliveries,
       deliveredCount,
       pendingCount,
+      cancelledCount,
       activeTransporters: transporters.length,
+      lowStockProducts,
+      totalProducts: products.length,
+      totalStock,
+      totalMovements,
+      incomingQuantity,
+      outgoingQuantity,
+      livraisons,
+      transporters,
+      products,
+      movements,
     };
   } catch (error) {
     console.error("Error fetching logistics dashboard data:", error);
@@ -734,7 +800,124 @@ export const getLogisticsDashboardData = async () => {
       totalDeliveries: 0,
       deliveredCount: 0,
       pendingCount: 0,
+      cancelledCount: 0,
       activeTransporters: 0,
+      lowStockProducts: 0,
+      totalProducts: 0,
+      totalStock: 0,
+      totalMovements: 0,
+      incomingQuantity: 0,
+      outgoingQuantity: 0,
+      livraisons: [],
+      transporters: [],
+      products: [],
+      movements: [],
+    };
+  }
+};
+
+export const getLogisticsChartData = async (period = "month") => {
+  try {
+    const [livraisonsRes, transportersRes, productsRes, movementsRes] = await Promise.all([
+      apiClient.get("/livraisons", { params: { limit: 1000 } }),
+      apiClient.get("/transporters", { params: { limit: 1000 } }),
+      apiClient.get("/products", { params: { limit: 1000 } }),
+      apiClient.get("/stock-movements", { params: { limit: 1000 } }),
+    ]);
+
+    const livraisons = livraisonsRes.data?.data || livraisonsRes.data || [];
+    const transporters = transportersRes.data?.data || transportersRes.data || [];
+    const products = productsRes.data?.data || productsRes.data || [];
+    const movements = movementsRes.data?.data || movementsRes.data || [];
+
+    const incomingMovements = movements.filter((movement) => String(movement.type || "").toLowerCase() === "in");
+    const outgoingMovements = movements.filter((movement) => String(movement.type || "").toLowerCase() === "out");
+
+    const movementTrendData = buildDualLineSeries({
+      actualRecords: incomingMovements,
+      objectiveRecords: outgoingMovements,
+      period,
+      actualValueResolver: (movement) => Number(movement.quantity || 0),
+      objectiveValueResolver: (movement) => Number(movement.quantity || 0),
+    }).map((item) => ({
+      name: item.name,
+      incoming: item.actual,
+      outgoing: item.objective,
+    }));
+
+    const deliveryStatusData = [
+      { name: "Planifiées", value: livraisons.filter((delivery) => isPendingDeliveryStatus(delivery.status)).length },
+      { name: "Livrées", value: livraisons.filter((delivery) => isDeliveredStatus(delivery.status)).length },
+      { name: "Annulées", value: livraisons.filter((delivery) => isCancelledDeliveryStatus(delivery.status)).length },
+    ];
+
+    const movementDirectionData = [
+      {
+        name: "Entrées",
+        value: incomingMovements.reduce((sum, movement) => sum + Number(movement.quantity || 0), 0),
+      },
+      {
+        name: "Sorties",
+        value: outgoingMovements.reduce((sum, movement) => sum + Number(movement.quantity || 0), 0),
+      },
+    ];
+
+    const transporterById = new Map(
+      transporters
+        .map((transporter) => [String(transporter?._id || transporter?.id || ""), transporter])
+        .filter(([id]) => id)
+    );
+
+    const transporterCounts = new Map();
+    livraisons.forEach((delivery) => {
+      const transporter = delivery.transporter;
+      const transporterId = typeof transporter === "object" ? String(transporter?._id || transporter?.id || "") : String(transporter || "");
+      const label = getTransporterLabel(transporter, transporterById);
+      const key = transporterId || label;
+
+      if (!key) return;
+
+      if (!transporterCounts.has(key)) {
+        transporterCounts.set(key, { id: key, name: label, value: 0 });
+      }
+
+      const entry = transporterCounts.get(key);
+      entry.name = entry.name || label;
+      entry.value += 1;
+    });
+
+    const transporterData = Array.from(transporterCounts.values())
+      .sort((left, right) => right.value - left.value)
+      .slice(0, 10);
+
+    const stockRiskData = products
+      .map((product) => ({
+        name: product.name || product.reference || "Produit inconnu",
+        value: Number(product.quantity || 0),
+        threshold: Number(product.minThreshold || 0),
+      }))
+      .sort((left, right) => left.value - right.value || right.threshold - left.threshold)
+      .slice(0, 10)
+      .map((item) => ({
+        name: item.name,
+        value: item.value,
+      }));
+
+    return {
+      movementTrendData,
+      deliveryStatusData,
+      movementDirectionData,
+      transporterData,
+      stockRiskData,
+    };
+  } catch (error) {
+    console.error("Error fetching logistics chart data:", error);
+    return {
+      movementTrendData: [],
+      deliveryStatusData: [],
+      movementDirectionData: [],
+      transporterData: [],
+      stockRiskData: [],
     };
   }
 };

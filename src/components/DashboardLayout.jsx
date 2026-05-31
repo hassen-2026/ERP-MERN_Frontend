@@ -74,15 +74,12 @@ export const LineChartWidget = ({
   selectValue,
   onSelectChange,
 }) => (
-  <Card
-    title={title}
-    extra={
-      selectOptions.length > 0 ? (
+  <Card title={title} style={{ marginBottom: "20px" }}>
+    {selectOptions.length > 0 ? (
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
         <Select value={selectValue} onChange={onSelectChange} options={selectOptions} style={{ width: 160 }} />
-      ) : null
-    }
-    style={{ marginBottom: "20px" }}
-  >
+      </div>
+    ) : null}
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />

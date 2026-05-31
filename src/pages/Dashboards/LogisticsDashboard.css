@@ -1,7 +1,10 @@
 .logistics-dashboard {
   padding: 24px;
-  background-color: #f4f6fb;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef3f9 100%);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .logistics-dashboard .logistics-kpi-card {
@@ -9,6 +12,8 @@
   padding: 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   border-top: 4px solid #1890ff;
+  background: #fff;
+  border-radius: 12px;
 }
 
 .logistics-dashboard .kpi-label {

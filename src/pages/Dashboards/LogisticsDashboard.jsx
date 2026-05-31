@@ -9,35 +9,49 @@ import LoadingSpinner from "../../components/molecules/LoadingSpinner/LoadingSpi
 import Alert from "../../components/atoms/alert/Alert";
 import DashboardChartsSection from "../../components/organisms/DashboardChartsSection/DashboardChartsSection";
 import DashboardKPIsSection from "../../components/organisms/DashboardKPIsSection/DashboardKPIsSection";
-import { getLogisticsDashboardData } from "../../services/dashboardApi";
+import StackedAreaWidget from "../../components/organisms/StackedAreaWidget/StackedAreaWidget";
+import HeatmapCalendarWidget from "../../components/organisms/HeatmapCalendarWidget/HeatmapCalendarWidget";
+import { useLogisticsDashboard } from "../../redux/hooks/useDashboard";
+import { buildDualLineSeries, PERIOD_OPTIONS } from "../../utils/chartAggregation";
 import "./LogisticsDashboard.css";
 
 export default function LogisticsDashboard() {
-  const [stats, setStats] = useState({
-    totalDeliveries: 0,
-    deliveredCount: 0,
-    pendingCount: 0,
-    activeTransporters: 0,
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    dashboardData: stats,
+    loading,
+    error,
+    chartData,
+    chartLoading: chartsLoading,
+    chartError: chartsError,
+    chartPeriod,
+    fetchData,
+    fetchCharts,
+  } = useLogisticsDashboard();
+
+  const [localChartPeriod, setLocalChartPeriod] = useState(chartPeriod || "month");
+  const [selectedProductId, setSelectedProductId] = useState("all");
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getLogisticsDashboardData();
-        setStats(data);
-      } catch (err) {
-        console.error("Error loading logistics dashboard:", err);
-        setError("Impossible de charger le tableau de bord.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    fetchData();
+    fetchCharts(localChartPeriod);
   }, []);
+
+  useEffect(() => {
+    fetchCharts(localChartPeriod);
+  }, [localChartPeriod]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData();
+      fetchCharts(localChartPeriod);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [localChartPeriod]);
+
+  const movements = stats.movements || [];
+  const incomingMovementsCount = movements.filter((movement) => String(movement.type || "").toLowerCase() === "in").length;
+  const outgoingMovementsCount = movements.filter((movement) => String(movement.type || "").toLowerCase() === "out").length;
 
   const dashboardStats = useMemo(() => [
     {
@@ -56,101 +70,192 @@ export default function LogisticsDashboard() {
       color: "#faad14",
     },
     {
+      title: "Annulées",
+      value: stats.cancelledCount,
+      color: "#ff4d4f",
+    },
+    {
       title: "Transporteurs actifs",
       value: stats.activeTransporters,
       color: "#184f87",
     },
-  ], [stats]);
+    {
+      title: "Mouvements stock",
+      value: stats.totalMovements,
+      color: "#722ed1",
+    },
+    {
+      title: "Nombre de mouvements entrants",
+      value: incomingMovementsCount,
+      color: "#31a354",
+    },
+    {
+      title: "Nombre de mouvements sortants",
+      value: outgoingMovementsCount,
+      color: "#faad14",
+    },
+    {
+      title: "Produits à surveiller",
+      value: stats.lowStockProducts,
+      color: "#fa541c",
+    },
+    {
+      title: "Produits référencés",
+      value: stats.totalProducts,
+      color: "#13c2c2",
+    },
+    {
+      title: "Stock total",
+      value: stats.totalStock,
+      color: "#52c41a",
+    },
+  ], [stats, incomingMovementsCount, outgoingMovementsCount]);
 
-  // Monthly deliveries
-  const deliveryData = [
-    { month: "Janv", shipped: 245, delivered: 238, delayed: 7 },
-    { month: "Fevr", shipped: 268, delivered: 263, delayed: 5 },
-    { month: "Mars", shipped: 235, delivered: 230, delayed: 5 },
-    { month: "Avr", shipped: 302, delivered: 298, delayed: 4 },
-    { month: "Mai", shipped: 285, delivered: 282, delayed: 3 },
-    { month: "Juin", shipped: 325, delivered: 320, delayed: 5 },
-  ];
+  const movementTrendData = chartData?.movementTrendData || [];
+  const deliveryStatusData = chartData?.deliveryStatusData || [];
+  const movementDirectionData = chartData?.movementDirectionData || [];
+  const transporterData = chartData?.transporterData || [];
+  const stockRiskData = chartData?.stockRiskData || [];
+  const productOptions = useMemo(() => {
+    const products = stats.products || [];
 
-  // Delivery by region
-  const regionData = [
-    { region: "Nord", deliveries: 385, cost: 12500 },
-    { region: "Sud", deliveries: 428, cost: 14200 },
-    { region: "Est", deliveries: 352, cost: 11800 },
-    { region: "Ouest", deliveries: 298, cost: 9900 },
-    { region: "Centre", deliveries: 242, cost: 8100 },
-  ];
+    return [
+      { value: "all", label: "Tous les produits" },
+      ...products.map((product) => ({
+        value: String(product._id || product.id || ""),
+        label: product.reference ? `${product.name || "Produit"} (${product.reference})` : (product.name || "Produit inconnu"),
+      })).filter((item) => item.value),
+    ];
+  }, [stats.products]);
 
-  // Shipment status
-  const statusData = [
-    { status: "En transit", value: 85 },
-    { status: "En attente de collecte", value: 28 },
-    { status: "En cours de livraison", value: 32 },
-  ];
+  const stackedMovementTrendData = useMemo(() => {
+    const selectedProduct = String(selectedProductId || "all");
+    const relevantMovements = selectedProduct === "all"
+      ? movements
+      : movements.filter((movement) => String(movement.product?._id || movement.product?.id || movement.product || movement.productId || "") === selectedProduct);
 
-  const statusColors = ["#1890ff", "#faad14", "#52c41a"];
+    return buildDualLineSeries({
+      actualRecords: relevantMovements.filter((movement) => String(movement.type || "").toLowerCase() === "in"),
+      objectiveRecords: relevantMovements.filter((movement) => String(movement.type || "").toLowerCase() === "out"),
+      period: localChartPeriod,
+      actualValueResolver: (movement) => Number(movement.quantity || 0),
+      objectiveValueResolver: (movement) => Number(movement.quantity || 0),
+    }).map((item) => ({
+      name: item.name,
+      incoming: item.actual,
+      outgoing: item.objective,
+    }));
+  }, [movements, selectedProductId, localChartPeriod]);
 
-  // Cost by transport mode
-  const transportData = [
-    { mode: "Route", cost: 28000, deliveries: 352 },
-    { mode: "Air", cost: 18500, deliveries: 95 },
-    { mode: "Mer", cost: 12000, deliveries: 65 },
-    { mode: "Rail", cost: 8200, deliveries: 58 },
-  ];
+  const productsStockData = useMemo(() => {
+    const products = stats.products || [];
 
-  // Warehouse inventory
-  const warehouseData = [
-    { warehouse: "Entrepot A", capacity: 85, items: 4250 },
-    { warehouse: "Entrepot B", capacity: 92, items: 4600 },
-    { warehouse: "Entrepot C", capacity: 65, items: 3900 },
-    { warehouse: "Entrepot D", capacity: 78, items: 4100 },
-  ];
+    return products
+      .map((product) => ({
+        name: product.name || product.reference || product.code || "Produit inconnu",
+        value: Number(product.quantity || 0),
+      }))
+      .sort((left, right) => right.value - left.value)
+      .slice(0, 10);
+  }, [stats.products]);
+
+  // Build heatmap values from movements (last 90 days)
+  const heatmapValues = movements.map((m) => ({ date: m.createdAt || m.date || m.timestamp || m.createdAt, value: Number(m.quantity || 1) }));
+
+  const deliveryRate = stats.totalDeliveries > 0 ? Math.round((stats.deliveredCount / stats.totalDeliveries) * 100) : 0;
+  const stockAlertRate = stats.totalProducts > 0
+    ? Math.round((stats.lowStockProducts / Math.max(stats.totalProducts, 1)) * 100)
+    : 0;
+  const averageStockPerProduct = stats.totalProducts > 0
+    ? Math.round((stats.totalStock / Math.max(stats.totalProducts, 1)) * 10) / 10
+    : 0;
+  const movementColors = ["#1890ff", "#faad14"];
 
   return (
     <div className="logistics-dashboard">
-      {loading && <LoadingSpinner size="large" tip="Chargement du tableau de bord Logistique..." />}
+      {(loading || chartsLoading) && <LoadingSpinner size="large" tip="Chargement du tableau de bord Stock..." />}
       {error && <Alert type="error" message={error} showIcon />}
+      {chartsError && <Alert type="warning" message={chartsError} showIcon />}
 
       <DashboardStatsGrid stats={dashboardStats} />
 
       <DashboardChartsSection
         charts={[
-          {
+           {
             span: 12,
             component: (
-              <LineChartWidget
-                title="Evolution mensuelle des expeditions"
-                data={deliveryData}
-                dataKey="delivered"
-                xAxis="month"
-                height={300}
+              <StackedAreaWidget
+                title="Entrées vs Sorties (empilé)"
+                data={stackedMovementTrendData}
+                areas={[{ key: "incoming", color: "#31a354" }, { key: "outgoing", color: "#faad14" }]}
+                xKey="name"
+                height={320}
+                selectOptions={productOptions}
+                selectValue={selectedProductId}
+                onSelectChange={setSelectedProductId}
+                selectPlaceholder="Filtrer par produit"
               />
             ),
           },
+         
           {
             span: 12,
             component: (
               <BarChartWidget
-                title="Livraisons par region"
-                data={regionData}
-                dataKey="deliveries"
-                xAxis="region"
+                title="Produits en stock"
+                data={productsStockData}
+                dataKey="value"
+                xAxis="name"
                 height={300}
               />
             ),
           },
         ]}
       />
-
+   <DashboardChartsSection
+        charts={[
+          {
+            span: 12,
+            component: (
+              <LineChartWidget
+                title="Mouvements de stock"
+                data={movementTrendData}
+                lines={[
+                  { key: "incoming", label: "Entrées", color: "#1890ff" },
+                  { key: "outgoing", label: "Sorties", color: "#faad14" },
+                ]}
+                xAxis="name"
+                height={300}
+                selectOptions={PERIOD_OPTIONS}
+                selectValue={localChartPeriod}
+                onSelectChange={setLocalChartPeriod}
+              />
+            ),
+          },
+           {
+            span: 12,
+            component: (
+              <BarChartWidget
+                title="Produits à surveiller"
+                data={stockRiskData}
+                dataKey="value"
+                xAxis="name"
+                height={300}
+              />
+            ),
+          },
+          
+        ]}
+      />
       <DashboardChartsSection
         charts={[
           {
             span: 12,
             component: (
               <PieChartWidget
-                title="Statut actuel des expeditions"
-                data={statusData}
-                colors={statusColors}
+                title="Répartition des mouvements"
+                data={movementDirectionData}
+                colors={movementColors}
                 height={300}
               />
             ),
@@ -159,10 +264,10 @@ export default function LogisticsDashboard() {
             span: 12,
             component: (
               <BarChartWidget
-                title="Cout par mode de transport"
-                data={transportData}
-                dataKey="cost"
-                xAxis="mode"
+                title="Transporteurs les plus actifs"
+                data={transporterData}
+                dataKey="value"
+                xAxis="name"
                 height={300}
               />
             ),
@@ -170,29 +275,16 @@ export default function LogisticsDashboard() {
         ]}
       />
 
-      <DashboardChartsSection
-        charts={[
-          {
-            span: 24,
-            component: (
-              <BarChartWidget
-                title="Utilisation de la capacite des entrepots"
-                data={warehouseData}
-                dataKey="capacity"
-                xAxis="warehouse"
-                height={300}
-              />
-            ),
-          },
-        ]}
-      />
+   
+
 
       <DashboardKPIsSection
         kpis={[
-          { label: "Taux de livraison a temps", value: "96.2%" },
-          { label: "Cout moyen / livraison", value: "$125" },
-          { label: "Efficacite de la flotte", value: "4.2 / 5.0" },
-          { label: "Taux de retour", value: "2.8%" },
+          { label: "Taux de livraison", value: `${deliveryRate}%` },
+          { label: "Produits à risque", value: `${stockAlertRate}%` },
+          { label: "Stock moyen / produit", value: Number(averageStockPerProduct).toLocaleString("fr-FR") },
+          { label: "Mouvements entrants", value: Number(incomingMovementsCount).toLocaleString("fr-FR") },
+          { label: "Mouvements sortants", value: Number(outgoingMovementsCount).toLocaleString("fr-FR") },
         ]}
       />
     </div>

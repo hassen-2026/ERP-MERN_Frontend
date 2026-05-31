@@ -1,0 +1,1 @@
+.heatmap-widget{display:flex;flex-direction:column}.hmw-title{font-weight:600;margin-bottom:8px}.hmw-grid{display:flex;gap:4px;overflow:auto;padding:4px}.hmw-week{display:flex;flex-direction:column;gap:4px}.hmw-cell{width:14px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.03)}

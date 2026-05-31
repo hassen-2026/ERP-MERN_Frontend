@@ -7,6 +7,8 @@ import {
   getSalesProductData,
   getDevisFunnelData,
   getDevisConversionData,
+  getLogisticsDashboardData,
+  getLogisticsChartData,
 } from "../../services/dashboardApi";
 
 // ============ ACTION TYPES ============
@@ -39,6 +41,15 @@ export const CLEAR_PROCUREMENT_DASHBOARD_ERROR = "CLEAR_PROCUREMENT_DASHBOARD_ER
 export const SET_PROCUREMENT_CHART_DATA = "SET_PROCUREMENT_CHART_DATA";
 export const SET_PROCUREMENT_CHART_LOADING = "SET_PROCUREMENT_CHART_LOADING";
 export const SET_PROCUREMENT_CHART_ERROR = "SET_PROCUREMENT_CHART_ERROR";
+
+export const SET_LOGISTICS_DASHBOARD_DATA = "SET_LOGISTICS_DASHBOARD_DATA";
+export const SET_LOGISTICS_DASHBOARD_LOADING = "SET_LOGISTICS_DASHBOARD_LOADING";
+export const SET_LOGISTICS_DASHBOARD_ERROR = "SET_LOGISTICS_DASHBOARD_ERROR";
+export const CLEAR_LOGISTICS_DASHBOARD_ERROR = "CLEAR_LOGISTICS_DASHBOARD_ERROR";
+
+export const SET_LOGISTICS_CHART_DATA = "SET_LOGISTICS_CHART_DATA";
+export const SET_LOGISTICS_CHART_LOADING = "SET_LOGISTICS_CHART_LOADING";
+export const SET_LOGISTICS_CHART_ERROR = "SET_LOGISTICS_CHART_ERROR";
 
 // ============ INITIAL STATE ============
 export const initialState = {
@@ -96,6 +107,32 @@ export const initialState = {
   procurementChartLoading: false,
   procurementChartError: null,
   procurementChartPeriod: "month",
+  // Logistics Dashboard
+  logisticsDashboardData: {
+    totalDeliveries: 0,
+    deliveredCount: 0,
+    pendingCount: 0,
+    cancelledCount: 0,
+    activeTransporters: 0,
+    lowStockProducts: 0,
+    totalProducts: 0,
+    totalStock: 0,
+    totalMovements: 0,
+    incomingQuantity: 0,
+    outgoingQuantity: 0,
+  },
+  logisticsDashboardLoading: false,
+  logisticsDashboardError: null,
+  logisticsChartData: {
+    movementTrendData: [],
+    deliveryStatusData: [],
+    movementDirectionData: [],
+    transporterData: [],
+    stockRiskData: [],
+  },
+  logisticsChartLoading: false,
+  logisticsChartError: null,
+  logisticsChartPeriod: "month",
 };
 
 // ============ ACTION CREATORS ============
@@ -128,6 +165,15 @@ export const clearProcurementDashboardError = () => ({ type: CLEAR_PROCUREMENT_D
 export const setProcurementChartData = (data) => ({ type: SET_PROCUREMENT_CHART_DATA, payload: data });
 export const setProcurementChartLoading = (loading) => ({ type: SET_PROCUREMENT_CHART_LOADING, payload: loading });
 export const setProcurementChartError = (error) => ({ type: SET_PROCUREMENT_CHART_ERROR, payload: error });
+
+export const setLogisticsDashboardData = (data) => ({ type: SET_LOGISTICS_DASHBOARD_DATA, payload: data });
+export const setLogisticsDashboardLoading = (loading) => ({ type: SET_LOGISTICS_DASHBOARD_LOADING, payload: loading });
+export const setLogisticsDashboardError = (error) => ({ type: SET_LOGISTICS_DASHBOARD_ERROR, payload: error });
+export const clearLogisticsDashboardError = () => ({ type: CLEAR_LOGISTICS_DASHBOARD_ERROR });
+
+export const setLogisticsChartData = (data) => ({ type: SET_LOGISTICS_CHART_DATA, payload: data });
+export const setLogisticsChartLoading = (loading) => ({ type: SET_LOGISTICS_CHART_LOADING, payload: loading });
+export const setLogisticsChartError = (error) => ({ type: SET_LOGISTICS_CHART_ERROR, payload: error });
 
 // ============ THUNK ACTIONS ============
 export const fetchSalesDashboardData = () => async (dispatch) => {
@@ -234,6 +280,32 @@ export const fetchProcurementChartData = (period = "month") => async (dispatch) 
   }
 };
 
+export const fetchLogisticsDashboardData = () => async (dispatch) => {
+  try {
+    dispatch(setLogisticsDashboardLoading(true));
+    dispatch(setLogisticsDashboardError(null));
+    const data = await getLogisticsDashboardData();
+    dispatch(setLogisticsDashboardData(data));
+  } catch (error) {
+    dispatch(setLogisticsDashboardError(error.message));
+  } finally {
+    dispatch(setLogisticsDashboardLoading(false));
+  }
+};
+
+export const fetchLogisticsChartData = (period = "month") => async (dispatch) => {
+  try {
+    dispatch(setLogisticsChartLoading(true));
+    dispatch(setLogisticsChartError(null));
+    const data = await getLogisticsChartData(period);
+    dispatch(setLogisticsChartData(data));
+  } catch (error) {
+    dispatch(setLogisticsChartError(error.message));
+  } finally {
+    dispatch(setLogisticsChartLoading(false));
+  }
+};
+
 // ============ REDUCER ============
 const DashboardReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -294,6 +366,23 @@ const DashboardReducer = (state = initialState, action) => {
       return { ...state, procurementChartLoading: action.payload };
     case SET_PROCUREMENT_CHART_ERROR:
       return { ...state, procurementChartError: action.payload };
+
+    // Logistics Dashboard
+    case SET_LOGISTICS_DASHBOARD_DATA:
+      return { ...state, logisticsDashboardData: action.payload };
+    case SET_LOGISTICS_DASHBOARD_LOADING:
+      return { ...state, logisticsDashboardLoading: action.payload };
+    case SET_LOGISTICS_DASHBOARD_ERROR:
+      return { ...state, logisticsDashboardError: action.payload };
+    case CLEAR_LOGISTICS_DASHBOARD_ERROR:
+      return { ...state, logisticsDashboardError: null };
+
+    case SET_LOGISTICS_CHART_DATA:
+      return { ...state, logisticsChartData: action.payload };
+    case SET_LOGISTICS_CHART_LOADING:
+      return { ...state, logisticsChartLoading: action.payload };
+    case SET_LOGISTICS_CHART_ERROR:
+      return { ...state, logisticsChartError: action.payload };
 
     default:
       return state;

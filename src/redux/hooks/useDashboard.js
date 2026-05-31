@@ -11,6 +11,9 @@ import {
   fetchProcurementChartData,
   clearSalesDashboardError,
   clearProcurementDashboardError,
+  fetchLogisticsDashboardData,
+  fetchLogisticsChartData,
+  clearLogisticsDashboardError,
 } from "../reducers/DashboardReducer";
 
 export const useSalesDashboard = () => {
@@ -86,6 +89,34 @@ export const useProcurementDashboard = () => {
   const fetchData = useCallback(() => dispatch(fetchProcurementDashboardData()), [dispatch]);
   const fetchCharts = useCallback((period) => dispatch(fetchProcurementChartData(period)), [dispatch]);
   const clearError = useCallback(() => dispatch(clearProcurementDashboardError()), [dispatch]);
+
+  return {
+    dashboardData,
+    loading,
+    error,
+    chartData,
+    chartLoading,
+    chartError,
+    chartPeriod,
+    fetchData,
+    fetchCharts,
+    clearError,
+  };
+};
+
+export const useLogisticsDashboard = () => {
+  const dispatch = useDispatch();
+  const dashboardData = useSelector((state) => state.dashboards.logisticsDashboardData);
+  const loading = useSelector((state) => state.dashboards.logisticsDashboardLoading);
+  const error = useSelector((state) => state.dashboards.logisticsDashboardError);
+  const chartData = useSelector((state) => state.dashboards.logisticsChartData);
+  const chartLoading = useSelector((state) => state.dashboards.logisticsChartLoading);
+  const chartError = useSelector((state) => state.dashboards.logisticsChartError);
+  const chartPeriod = useSelector((state) => state.dashboards.logisticsChartPeriod);
+
+  const fetchData = useCallback(() => dispatch(fetchLogisticsDashboardData()), [dispatch]);
+  const fetchCharts = useCallback((period) => dispatch(fetchLogisticsChartData(period)), [dispatch]);
+  const clearError = useCallback(() => dispatch(clearLogisticsDashboardError()), [dispatch]);
 
   return {
     dashboardData,
